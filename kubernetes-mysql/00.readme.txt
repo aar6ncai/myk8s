@@ -1,0 +1,1 @@
+https://github.com/4admin2root/daocloud/tree/master/statefulset
