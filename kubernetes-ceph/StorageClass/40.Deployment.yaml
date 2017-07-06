@@ -1,0 +1,23 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: demo-rbd-sc
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: demo-rbd-sc
+    spec:
+      containers:
+      - name: demo-rbd-sc
+        image: mritd/demo
+        ports:
+        - containerPort: 80
+        volumeMounts:
+          - mountPath: "/data"
+            name: data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: test-rbd-sc-pvc
