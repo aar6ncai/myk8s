@@ -1,0 +1,1 @@
+kubectl create secret docker-registry linux100 --docker-server=hub.linux100.cc --docker-username=admin --docker-password=Harbor12345 --docker-email=dream08@139.com
