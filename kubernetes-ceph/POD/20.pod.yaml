@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: rbd2
+  name: test-rbd-pod
 spec:
   containers:
   - name: test-rbd-pod
@@ -15,7 +15,7 @@ spec:
       monitors:
       - 192.168.28.182:6789
       pool: kube
-      image: test-pod
+      image: test-pod01
       user: admin
       secretRef:
         name: ceph-secret

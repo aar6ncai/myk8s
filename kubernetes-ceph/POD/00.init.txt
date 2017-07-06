@@ -5,7 +5,7 @@ yum install -y ceph-common
 ceph osd pool create kube 32
 ceph osd pool ls
 
-rbd create test-pv01 --size 1024 --pool kube  --image-format 2 --image-feature  layering   [-m {mon-IP}] [-k /etc/ceph/ceph.client.admin.keyring]
+rbd create test-pod01 --size 1024 --pool kube  --image-format 2 --image-feature  layering   [-m {mon-IP}] [-k /etc/ceph/ceph.client.admin.keyring]
 rbd ls --pool kube
 
 ceph auth get-or-create client.kube mon 'allow r' osd 'allow rwx  pool=kube'
