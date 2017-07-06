@@ -1,5 +1,5 @@
 所有k8s node机器上  
-yum install -y ceph-common rbd
+yum install -y ceph-common
 
 
 ceph osd pool create kube 32
