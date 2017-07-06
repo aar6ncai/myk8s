@@ -1,0 +1,46 @@
+在创建StatefulSet之前需要准备的东西，值得注意的是创建顺序非常关键，创建顺序如下：
+
+1、Volume
+2、Persistent Volume
+3、Persistent Volume Claim
+4、Service
+5、StatefulSet
+
+Volume可以有很多种类型，比如nfs、glusterfs等，我们这里使用的ceph RBD来创建。
+
+
+ceph osd pool create kube 32
+ceph osd pool ls
+
+rbd create kafka --size 10240 --pool kube  --image-format 2 --image-feature  layering   [-m {mon-IP}] [-k /etc/ceph/ceph.client.admin.keyring]
+rbd ls --pool kube
+
+
+ceph auth get-or-create client.kube mon 'allow r' osd 'allow rwx pool=kube'
+ceph auth get client.kube  2>&1 |grep "key = " |awk '{print  $3'} |xargs echo -n > /tmp/secret-kube
+ceph auth get client.admin 2>&1 |grep "key = " |awk '{print  $3'} |xargs echo -n > /tmp/secret-admin
+
+kubectl create secret generic ceph-secret-kube  --type="kubernetes.io/rbd"  --from-file=/tmp/secret-kube  --namespace=kube-system
+kubectl create secret generic ceph-secret-admin --type="kubernetes.io/rbd"  --from-file=/tmp/secret-admin --namespace=kube-system
+
+kubectl create secret generic ceph-secret-kube  --type="kubernetes.io/rbd"  --from-file=/tmp/secret-kube  --namespace=default
+kubectl create secret generic ceph-secret-admin --type="kubernetes.io/rbd"  --from-file=/tmp/secret-admin --namespace=default
+
+kubectl create secret generic ceph-secret-kube  --type="kubernetes.io/rbd"  --from-file=/tmp/secret-kube  --namespace=kafka
+kubectl create secret generic ceph-secret-admin --type="kubernetes.io/rbd"  --from-file=/tmp/secret-admin --namespace=kafka
+
+
+kubectl  -n kafka get Secret
+kubectl  -n kafka get ServiceAccount
+kubectl  -n kafka get configmap
+kubectl  -n kafka get Ingress
+kubectl  -n kafka get StorageClass
+kubectl  -n kafka get DaemonSet
+kubectl  -n kafka get job
+kubectl  -n kafka get all
+
+
+
+https://github.com/kubernetes/kubernetes/tree/master/examples/persistent-volume-provisioning/rbd
+http://www.cnblogs.com/puyangsky/p/6677308.html
+https://github.com/johnzheng1975/kubernetes-kafka

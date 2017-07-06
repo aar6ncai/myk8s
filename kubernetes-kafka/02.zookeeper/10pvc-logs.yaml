@@ -1,0 +1,68 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: datalog-zoo-0
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 256Mi
+  storageClassName: kafka-storageclass
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: datalog-zoo-1
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 256Mi
+  storageClassName: kafka-storageclass
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: datalog-zoo-2
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 256Mi
+  storageClassName: kafka-storageclass
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: datalog-zoo-3
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 256Mi
+  storageClassName: kafka-storageclass
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: datalog-zoo-4
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 256Mi
+  storageClassName: kafka-storageclass
