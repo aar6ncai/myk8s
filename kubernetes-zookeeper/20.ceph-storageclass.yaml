@@ -1,4 +1,4 @@
-apiVersion: storage.k8s.io/v1beta1
+apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
    name: slow
@@ -7,5 +7,7 @@ parameters:
     monitors: es1-bm0604.synjones.com:6789,es2-bm0606.synjones.com:6789,esr3-bm0608.synjones.com:6789
     adminId: admin
     adminSecretName: ceph-secret-admin
+    adminSecretNamespace: kube-system
     pool: rbd
+    userId: admin
     userSecretName: ceph-secret-admin
