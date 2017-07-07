@@ -1,1 +1,4 @@
 https://github.com/4admin2root/daocloud/tree/master/statefulset
+
+
+http://blog.csdn.net/qq_26923057/article/details/52713447
