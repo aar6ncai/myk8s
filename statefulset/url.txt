@@ -1,0 +1,7 @@
+https://kubernetes.io/docs/tutorials/stateful-application/zookeeper/
+https://kubernetes.io/docs/tasks/run-application/run-replicated-stateful-application/
+
+http://www.jianshu.com/p/98337fc2e8d3
+https://my.oschina.net/u/1791060/blog/849823
+https://www.kubernetes.org.cn/1130.html
+https://github.com/4admin2root/daocloud/blob/master/statefulset/zookeeper.yaml
