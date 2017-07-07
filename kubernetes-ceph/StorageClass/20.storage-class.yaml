@@ -7,7 +7,7 @@ parameters:
     monitors: 192.168.28.182:6789
     adminId: admin
     adminSecretName: ceph-secret-admin
-    adminSecretNamespace: "kube-system"
+    adminSecretNamespace: kube-system
     pool: kube
     userId: kube
     userSecretName: ceph-secret-kube

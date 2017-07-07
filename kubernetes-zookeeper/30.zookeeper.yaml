@@ -69,8 +69,8 @@ spec:
     spec:
       containers:
       - name: k8szk
-        imagePullPolicy: Always
-        image: docker.io/4admin2root/k8szk:v1
+        imagePullPolicy: IfNotPresent
+        image: 4admin2root/k8szk:v1
         resources:
           requests:
             memory: "2Gi"
