@@ -1,0 +1,11 @@
+apiVersion: storage.k8s.io/v1beta1
+kind: StorageClass
+metadata:
+   name: slow
+provisioner: kubernetes.io/rbd
+parameters:
+    monitors: es1-bm0604.synjones.com:6789,es2-bm0606.synjones.com:6789,esr3-bm0608.synjones.com:6789
+    adminId: admin
+    adminSecretName: ceph-secret-admin
+    pool: rbd
+    userSecretName: ceph-secret-admin
