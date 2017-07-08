@@ -1,0 +1,48 @@
+/**
+ * This pipeline describes a multi container job, running Maven and Golang builds
+ */
+
+podTemplate(label: 'pipeline', containers: [
+  containerTemplate(name: 'jnlp', image: 'jenkinsci/jnlp-slave:2.62', args: '${computer.jnlpmac} ${computer.name}', workingDir: '/home/jenkins', resourceRequestCpu: '200m', resourceLimitCpu: '200m', resourceRequestMemory: '256Mi', resourceLimitMemory: '256Mi'),
+  containerTemplate(name: 'docker', image: 'docker:1.12.6', command: 'cat', ttyEnabled: true),
+  containerTemplate(name: 'alpine', image: 'alpine:3.1', command: 'cat', ttyEnabled: true)
+  ]) {
+
+    node('pipeline') {
+
+      stage('Run shell') {
+
+        container('alpine') {
+            sh 'echo hello world'
+          }
+        }
+
+
+      stage ('Code Pull on Github') {
+          container('alpine') {
+            git credentialsId: 'github',
+            url: 'https://github.com/mugithi/blog.git'
+        }
+      }
+
+      stage ('Container Image Builds') {
+          container('jnlp') {
+          // perform docker login into docker hub
+           withCredentials([[$class: 'UsernamePasswordMultiBinding',
+            credentialsId: 'github',
+            passwordVariable: 'DOCKER_PASSWORD',
+            usernameVariable: 'DOCKER_USERNAME']]) {
+                 sh '''sudo docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} -e isackaranja@gmail.com
+                       sudo docker build -t mugithi/blog:${BUILD_TAG} .'''
+             }
+           }
+         }
+      stage ('Image Push to Dockerhub') {
+          container('docker') {
+          sh 'sudo docker push mugithi/blog:${BUILD_TAG}'
+           }
+        }
+
+     }
+
+  }
