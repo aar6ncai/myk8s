@@ -4,6 +4,8 @@
 
 2. https://github.com/rootsongjc/kubernetes-handbook/blob/master/SUMMARY.md
 
-3. https://github.com/suredandan/semi-auto-deploy-k8s
+3. https://github.com/feiskyer/kubernetes-handbook/blob/master/SUMMARY.md
 
-4. https://github.com/cookeem/kubeadm-ha
+4. https://github.com/suredandan/semi-auto-deploy-k8s
+
+5. https://github.com/cookeem/kubeadm-ha
