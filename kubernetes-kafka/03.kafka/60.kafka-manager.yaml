@@ -1,0 +1,45 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-manager
+  namespace: kafka
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 9000
+    protocol: TCP
+    name: kafka-manager
+  selector:
+    app: kafka-manager
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kafka-manager
+  namespace: kafka
+spec:
+  replicas: 2
+  template:
+    metadata:
+      annotations:
+        alpha.istio.io/sidecar: ignore
+      labels:
+        app: kafka-manager
+    spec:
+      containers:
+      - name: kafka-manager
+        image: sheepkiller/kafka-manager
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 9000
+        env:
+        - name: KM_USERNAME
+          value: admin
+        - name: KM_PASSWORD
+          value: letmein
+        - name: APPLICATION_SECRET
+          value: changeme
+        - name: ZK_HOSTS
+          value: "zookeeper:2181"
+---
