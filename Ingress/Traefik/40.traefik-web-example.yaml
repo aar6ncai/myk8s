@@ -9,5 +9,5 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: frontend
+          serviceName: my-frontend
           servicePort: 80
