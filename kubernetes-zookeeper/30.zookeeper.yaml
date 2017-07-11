@@ -20,7 +20,7 @@ metadata:
   name: zk-config
 data:
   ensemble: "zk-0;zk-1;zk-2"
-  jvm.heap: "1G"
+  jvm.heap: "512M"
   tick: "2000"
   init: "10"
   sync: "5"
@@ -73,7 +73,7 @@ spec:
         image: 4admin2root/k8szk:v1
         resources:
           requests:
-            memory: "2Gi"
+            memory: "1Gi"
             cpu: "1"
         ports:
         - containerPort: 2181
@@ -155,7 +155,7 @@ spec:
   - metadata:
       name: datadir
       annotations:
-        volume.beta.kubernetes.io/storage-class: slow
+        volume.beta.kubernetes.io/storage-class: kafka-storageclass
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
