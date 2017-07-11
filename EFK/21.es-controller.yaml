@@ -22,7 +22,7 @@ spec:
     spec:
       serviceAccountName: efk
       containers:
-      - image: itzg/elasticsearch:5.1.1
+      - image: triumph2008/elasticsearch:v5.4.0-1
         name: elasticsearch-logging
         resources:
           # need more cpu upon initialization, therefore burstable class

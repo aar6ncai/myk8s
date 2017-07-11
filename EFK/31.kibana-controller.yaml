@@ -20,7 +20,7 @@ spec:
       serviceAccountName: efk
       containers:
       - name: kibana-logging
-        image: itzg/kibana:5
+        image: triumph2008/kibana:v5.4.0
         resources:
           # keep request = limit to keep this container in guaranteed class
           limits:

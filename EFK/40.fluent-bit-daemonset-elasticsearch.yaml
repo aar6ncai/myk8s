@@ -8,7 +8,6 @@ metadata:
     version: v1
     kubernetes.io/cluster-service: "true"
 spec:
-  serviceAccountName: efk
   template:
     metadata:
       labels:
