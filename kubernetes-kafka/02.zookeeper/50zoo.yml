@@ -36,15 +36,20 @@ spec:
   volumeClaimTemplates:
   - metadata:
       name: datadir
+      annotations:
+        volume.beta.kubernetes.io/storage-class: kafka-storageclass
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 512Mi
+          storage: 1Gi
   - metadata:
       name: datalog
+      annotations:
+        volume.beta.kubernetes.io/storage-class: kafka-storageclass
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 256Mi
+          storage: 1024Mi
+
