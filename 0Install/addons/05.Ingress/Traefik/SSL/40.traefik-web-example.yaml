@@ -1,10 +1,28 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: traefik-ingress
+  name: traefik-example
 spec:
   rules:
   - host: traefik-example.linux100.cc
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: my-frontend
+          servicePort: 80
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: traefik-linux100
+spec:
+  tls:
+    - secretName: traefik-cert
+  rules:
+  - host: linux100.cc
     http:
       paths:
       - path: /
