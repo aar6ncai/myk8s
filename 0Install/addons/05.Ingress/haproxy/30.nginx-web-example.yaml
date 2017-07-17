@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-linux100-www
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  tls:
+  - secretName: traefik-cert
+  rules:
+  - host: linux100.cc
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: my-frontend
+          servicePort: 80
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-linux100-xxx
+spec:
+  rules:
+  - host: xxx.linux100.cc
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: my-frontend
+          servicePort: 80

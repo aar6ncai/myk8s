@@ -1,0 +1,39 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  labels:
+    run: haproxy-ingress
+  name: haproxy-ingress
+spec:
+  template:
+    metadata:
+      labels:
+        run: haproxy-ingress
+    spec:
+      serviceAccountName: haproxy-ingress-serviceaccount
+      containers:
+      - name: haproxy-ingress
+        image: triumph2008/haproxy-ingress:master
+        imagePullPolicy: IfNotPresent
+        args:
+        - --default-backend-service=kube-system/default-http-backend
+        - --default-ssl-certificate=kube-system/tls-secret
+        - --configmap=kube-system/haproxy-ingress
+        ports:
+        - name: http
+          containerPort: 80
+        - name: https
+          containerPort: 443
+        - name: stat
+          containerPort: 8936
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+      nodeSelector:
+        edgenode: "true"
