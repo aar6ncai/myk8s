@@ -31,6 +31,7 @@ mkdir /home/jenkins
 
 
 4.Pipeline
+# for git
 podTemplate(name: "jnlp-slave") {
   node("jnlp-slave") {
     stage 'Get a Maven project'
@@ -42,7 +43,33 @@ podTemplate(name: "jnlp-slave") {
   }
 }
 
-https://github.com/silvasong/CIJD.git
+
+# for svn
+podTemplate(name: "jnlp-slave") {
+  node("jnlp-slave") {
+    stage 'svn checkout'
+    checkout([$class: 'SubversionSCM', 
+              additionalCredentials: [], 
+              excludedCommitMessages: '', 
+              excludedRegions: '', 
+              excludedRevprop: '', 
+              excludedUsers: '', 
+              filterChangelog: false, 
+              ignoreDirPropChanges: false, 
+              includedRegions: '', 
+              locations: [[credentialsId: '0e8b367a-ec0a-4842-a846-f795b36ca7fb', 
+                           depthOption: 'infinity', 
+                           ignoreExternalsOption: true, 
+                           local: 'cable_branch', 
+                           remote: "http://10.252.163.79:8181/svn/DianZiQianZhang/trunk/h5/signature"]], 
+              workspaceUpdater: [$class: 'UpdateUpdater']])
+    container("jnlp") {
+       stage 'Build a Maven project'
+       sh 'mvn clean package'
+      }
+  }
+}
+
 
 
 
