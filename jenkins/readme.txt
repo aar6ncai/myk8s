@@ -13,7 +13,6 @@ nfs  (/home/nfsshare/k8s/jenkins/home/secrets/initialAdminPassword)
 
 
 2.jenkins-系统管理-系统设置-云-Kubernetes:
-
 Name: k8s_cluster
 Kubernetes URL: http://192.168.28.193:8080
 Kubernetes Namespace: default
@@ -27,8 +26,13 @@ Docker image: jenkinsci/jnlp-slave:2.62
 Jenkins slave root directory: /home/jenkins
 
 
+3.k8s nodes jnlp-slave
+mkdir /home/jenkins
 
 
+
+
+参考资料:
 https://github.com/Starefossen/jenkins-k8s-demo
 
 https://github.com/shuse2/docker-jnlp-slave-k8s
