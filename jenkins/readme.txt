@@ -4,6 +4,10 @@ yum -y install nfs-utils rpcbind
 echo "/home/nfsshare/ *(rw,no_root_squash,no_all_squash,sync)"  > /etc/exports 
 service rpcbind start ; service nfs start ; chkconfig rpcbind on ; chkconfig nfs on
 
+groupadd -g 1000  jenkins  &&   useradd -u 1000 -g 1000 jenkins
+mkdir -p /home/nfsshare/k8s/jenkins/home  && chown -R jenkins:jenkins  /home/nfsshare/k8s/jenkins/home
+
+
 1.cat  /var/jenkins_home/secrets/initialAdminPassword
 nfs  (/home/nfsshare/k8s/jenkins/home/secrets/initialAdminPassword)
 
