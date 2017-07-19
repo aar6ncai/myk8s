@@ -28,6 +28,7 @@
    </server>
   </servers>
 
+
   <mirrors>
    <mirror>
     <id>maven-net-cn</id>
@@ -42,6 +43,7 @@
     <url>http://192.168.8.231:8081/nexus/content/groups/public/</url>
    </mirror>
   </mirrors>
+
 
   <profiles>  
     <profile>  
