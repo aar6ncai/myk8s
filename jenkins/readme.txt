@@ -30,6 +30,20 @@ Jenkins slave root directory: /home/jenkins
 mkdir /home/jenkins
 
 
+4.Pipeline
+podTemplate(name: "jnlp-slave") {
+  node("jnlp-slave") {
+    stage 'Get a Maven project'
+    git 'https://github.com/silvasong/CIJD.git'
+    container("jnlp") {
+      stage 'Build a Maven project'
+      sh 'mvn clean package'
+      }
+  }
+}
+
+https://github.com/silvasong/CIJD.git
+
 
 
 参考资料:
@@ -46,3 +60,5 @@ https://github.com/kingdonb/kube-mvn-svn-slave
 https://github.com/chenmiao2016/jenkins-slave-jnlp-docker
 
 https://wiki.shileizcc.com/display/KUB/Kubernetes+Pipeline
+
+https://issues.jenkins-ci.org/browse/JENKINS-42315
