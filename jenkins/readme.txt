@@ -60,15 +60,19 @@ podTemplate(name: "jnlp-slave") {
               locations: [[credentialsId: '0e8b367a-ec0a-4842-a846-f795b36ca7fb', 
                            depthOption: 'infinity', 
                            ignoreExternalsOption: true, 
-                           local: 'cable_branch', 
-                           remote: "http://10.252.163.79:8181/svn/DianZiQianZhang/trunk/h5/signature"]], 
+                           local: 'src', 
+                           remote: "http://10.252.163.79:8181/svn/DianZiQianZhang/trunk/java/signature"]], 
               workspaceUpdater: [$class: 'UpdateUpdater']])
     container("jnlp") {
        stage 'Build a Maven project'
-       sh 'mvn clean package'
+       sh """
+       cd src
+       mvn clean package
+       """
       }
   }
 }
+
 
 
 
