@@ -64,31 +64,38 @@ podTemplate(name: "jnlp-slave") {
 # for svn
 podTemplate(name: "jnlp-slave") {
   node("jnlp-slave") {
-    stage 'svn checkout'
-    checkout([$class: 'SubversionSCM', 
-              additionalCredentials: [], 
-              excludedCommitMessages: '', 
-              excludedRegions: '', 
-              excludedRevprop: '', 
-              excludedUsers: '', 
-              filterChangelog: false, 
-              ignoreDirPropChanges: false, 
-              includedRegions: '', 
-              locations: [[credentialsId: '0e8b367a-ec0a-4842-a846-f795b36ca7fb', 
-                           depthOption: 'infinity', 
-                           ignoreExternalsOption: true, 
-                           local: 'src', 
-                           remote: "http://10.252.163.79:8181/svn/DianZiQianZhang/trunk/java/signature"]], 
+    stage('拉取源码')
+    checkout([$class: 'SubversionSCM',
+              additionalCredentials: [],
+              excludedCommitMessages: '',
+              excludedRegions: '',
+              excludedRevprop: '',
+              excludedUsers: '',
+              filterChangelog: false,
+              ignoreDirPropChanges: false,
+              includedRegions: '',
+              locations: [[credentialsId: '0e8b367a-ec0a-4842-a846-f795b36ca7fb',
+                           depthOption: 'infinity',
+                           ignoreExternalsOption: true,
+                           local: '.',  
+                           remote: "http://10.252.163.79:8181/svn/DianZiQianZhang/trunk/java/signature"]],
               workspaceUpdater: [$class: 'UpdateUpdater']])
+
+    stage('准备环境变量')
+      registry_addr = "hub.linux100.cc"
+      registry_access = "1c0cf695-a284-459c-9f0c-a28c63dbf20d"
+      maintainer_name = "library"
+      container_name = "signature"
+      build_tag = sh(returnStdout: true, script: 'date +%s')
+
     container("jnlp") {
        stage 'Build a Maven project'
        sh """
-       cd src && mvn clean package && cd ..
-       wget -O Dockerfile http://monitor.xxxxx.cn:8888/zabbix_soft/k8s_JAVA_signature_Dockerfile
-       docker build -t hub.linux100.cc/library/signature:2017072002 .
-       docker login -u=admin -p=Harbor12345 hub.linux100.cc
-       docker push hub.linux100.cc/library/signature:2017072002
-       docker rmi  hub.linux100.cc/library/signature:2017072002
+       mvn clean package 
+       docker build -t ${registry_addr}/${library}/${signature}:${build_tag} .
+       docker login -u=admin -p=Harbor12345 ${registry_addr}
+       docker push ${registry_addr}/${library}/${signature}:${build_tag}
+       docker rmi  ${registry_addr}/${library}/${signature}:${build_tag}
        """
       }
   }
@@ -110,9 +117,9 @@ podTemplate(name: "jnlp-slave") {
               locations: [[credentialsId: '0e8b367a-ec0a-4842-a846-f795b36ca7fb', 
                            depthOption: 'infinity', 
                            ignoreExternalsOption: true, 
-                           local: '', 
+                           local: '.', 
                            remote: "http://121.43.235.128:8181/svn/DianZiQianZhang/trunk/java/signature"]], 
-              workspaceUpdater: [$class: 'UpdateUpdater']])
+              workspaceUpdater: [$class: 'UpdateWithCleanUpdater']])
 
     stage('准备环境变量')
       registry_addr = "hub.linux100.cc"
@@ -132,7 +139,7 @@ podTemplate(name: "jnlp-slave") {
           def NewApp = docker.build("${registry_addr}/${maintainer_name}/${container_name}:${build_tag}")
           echo "The Demo Image is ${registry_addr}/${maintainer_name}/${container_name}:${build_tag}"
         stage('Push 镜像')
-          NewApp.push(commit)
+          NewApp.push()
       }
 
     stage('delete build 镜像')
