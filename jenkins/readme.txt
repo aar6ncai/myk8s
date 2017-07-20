@@ -47,7 +47,7 @@ podTemplate(name: "jnlp-slave") {
       container_name = "signature"
  
     stage('登入私用仓库')
-      docker.withRegistry("http://${registry_addr}", "${registry_access}"){
+      docker.withRegistry("https://${registry_addr}", "${registry_access}"){
         stage('Build 镜像')
           def NewApp = docker.build("${registry_addr}/${maintainer_name}/${container_name}:${build_tag}")
           echo "The Demo Image is ${registry_addr}/${maintainer_name}/${container_name}:${build_tag}"
