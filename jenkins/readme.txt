@@ -66,8 +66,12 @@ podTemplate(name: "jnlp-slave") {
     container("jnlp") {
        stage 'Build a Maven project'
        sh """
-       cd src
-       mvn clean package
+       cd src && mvn clean package && cd ..
+       wget -O Dockerfile http://monitor.xxxxx.cn:8888/zabbix_soft/k8s_JAVA_signature_Dockerfile
+       docker build -t hub.linux100.cc/library/signature:2017072002 .
+       docker login -u=admin -p=Harbor12345 hub.linux100.cc
+       docker push hub.linux100.cc/library/signature:2017072002
+       docker rmi  hub.linux100.cc/library/signature:2017072002
        """
       }
   }
@@ -80,16 +84,17 @@ podTemplate(name: "jnlp-slave") {
 参考资料:
 https://github.com/Starefossen/jenkins-k8s-demo
 
-https://github.com/shuse2/docker-jnlp-slave-k8s
+https://github.com/chenmiao2016/jenkins-slave-jnlp-docker
 
-https://github.com/mugithi/jenkinsfile-k8s/blob/master/Jenkinsfile
+https://github.com/shuse2/docker-jnlp-slave-k8s
 
 https://github.com/jaohaohsuan/jenkins-kubernetes
 
-https://github.com/kingdonb/kube-mvn-svn-slave
-
-https://github.com/chenmiao2016/jenkins-slave-jnlp-docker
+https://github.com/mugithi/jenkinsfile-k8s/blob/master/Jenkinsfile
 
 https://wiki.shileizcc.com/display/KUB/Kubernetes+Pipeline
 
+https://github.com/jenkinsci/kubernetes-plugin
 https://issues.jenkins-ci.org/browse/JENKINS-42315
+
+https://github.com/kingdonb/kube-mvn-svn-slave
