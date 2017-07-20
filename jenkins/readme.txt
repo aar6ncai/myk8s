@@ -37,15 +37,15 @@ https://raw.githubusercontent.com/triumph/myk8s/master/jenkins/k8s-jenkins_slave
 podTemplate(name: "jnlp-slave") {
   node("jnlp-slave") {
     stage('拉取源码')
-      git 'https://github.com/silvasong/CIJD.git'  
+      git 'https://github.com/triumph/CIJD.git'
       build_tag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
- 
+
     stage('准备环境变量')
       registry_addr = "hub.linux100.cc"
       registry_access = "1c0cf695-a284-459c-9f0c-a28c63dbf20d"
       maintainer_name = "library"
-      container_name = "signature"
- 
+      container_name = "CIJD"
+
     stage('登入私用仓库')
       docker.withRegistry("https://${registry_addr}", "${registry_access}"){
         stage('Build 镜像')
@@ -53,7 +53,7 @@ podTemplate(name: "jnlp-slave") {
           echo "The Demo Image is ${registry_addr}/${maintainer_name}/${container_name}:${build_tag}"
         stage('Push 镜像')
           NewApp.push()
-      } 
+      }
     stage('delete build images')
       sh """
       docker rmi ${registry_addr}/${maintainer_name}/${container_name}:${build_tag}
