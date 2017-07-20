@@ -1,0 +1,30 @@
+podTemplate(name: "jnlp-slave") {
+  node("jnlp-slave") {
+    stage('准备环境变量')
+        registry_url = "https://hub.linux100.cc"
+        registry_addr = "hub.linux100.cc"
+        registry_access = "1c0cf695-a284-459c-9f0c-a28c63dbf20d"
+        maintainer_name = "library"
+        container_name = "signature"
+        build_tag = sh(returnStdout: true, script: 'date +%s')
+
+    stage 'Get a Maven project'
+    git 'https://github.com/silvasong/CIJD.git'
+    container("jnlp") {
+      stage 'Build a Maven project'
+      sh 'mvn clean package'
+    }
+    stage ('Docker Build') {
+      withDockerServer([uri: "unix:///var/run/docker.sock"]) {
+        withDockerRegistry([credentialsId: "${registry_access}", url: "${registry_url}"]) {
+          def image = docker.build("${registry_addr}/${maintainer_name}/${container_name}:${build_tag}")
+          image.push()
+        }   
+      }
+    } 
+    stage('delete build images')
+       sh """
+       docker rmi ${registry_addr}/${maintainer_name}/${container_name}:${build_tag}
+       """
+  }
+}

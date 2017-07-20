@@ -91,6 +91,7 @@ https://github.com/shuse2/docker-jnlp-slave-k8s
 https://github.com/jaohaohsuan/jenkins-kubernetes
 
 https://github.com/mugithi/jenkinsfile-k8s/blob/master/Jenkinsfile
+https://github.com/jenkinsci/pipeline-examples/tree/master/jenkinsfile-examples/
 
 https://wiki.shileizcc.com/display/KUB/Kubernetes+Pipeline
 
