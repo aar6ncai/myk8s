@@ -9,7 +9,6 @@ podTemplate(name: "jnlp-slave") {
         registry_access = "1c0cf695-a284-459c-9f0c-a28c63dbf20d"
         maintainer_name = "library"
         container_name = "signature"
-        build_tag = sh(returnStdout: true, script: 'date +%s')
  
     stage('登入私用仓库')
         docker.withRegistry("http://${registry_addr}", "${registry_access}"){
