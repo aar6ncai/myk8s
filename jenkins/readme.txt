@@ -44,7 +44,7 @@ podTemplate(name: "jnlp-slave") {
       registry_addr = "hub.linux100.cc"
       registry_access = "1c0cf695-a284-459c-9f0c-a28c63dbf20d"
       maintainer_name = "library"
-      container_name = "CIJD"
+      container_name = "cijd"
 
     stage('登入私用仓库')
       docker.withRegistry("https://${registry_addr}", "${registry_access}"){
@@ -94,6 +94,53 @@ podTemplate(name: "jnlp-slave") {
   }
 }
 
+# for svn 02
+podTemplate(name: "jnlp-slave") {
+  node("jnlp-slave") {
+    stage('拉取源码')
+      checkout([$class: 'SubversionSCM', 
+              additionalCredentials: [], 
+              excludedCommitMessages: '', 
+              excludedRegions: '', 
+              excludedRevprop: '', 
+              excludedUsers: '', 
+              filterChangelog: false, 
+              ignoreDirPropChanges: false, 
+              includedRegions: '', 
+              locations: [[credentialsId: '0e8b367a-ec0a-4842-a846-f795b36ca7fb', 
+                           depthOption: 'infinity', 
+                           ignoreExternalsOption: true, 
+                           local: '', 
+                           remote: "http://121.43.235.128:8181/svn/DianZiQianZhang/trunk/java/signature"]], 
+              workspaceUpdater: [$class: 'UpdateUpdater']])
+
+    stage('准备环境变量')
+      registry_addr = "hub.linux100.cc"
+      registry_access = "1c0cf695-a284-459c-9f0c-a28c63dbf20d"
+      maintainer_name = "library"
+      container_name = "signature"
+      build_tag = sh(returnStdout: true, script: 'date +%s')
+
+    container("jnlp") {
+        stage("Build a Maven project")
+          sh "mvn clean package"
+      }
+
+    stage('登入私用仓库')
+      docker.withRegistry("http://${registry_addr}", "${registry_access}"){
+        stage('Build 镜像')
+          def NewApp = docker.build("${registry_addr}/${maintainer_name}/${container_name}:${build_tag}")
+          echo "The Demo Image is ${registry_addr}/${maintainer_name}/${container_name}:${build_tag}"
+        stage('Push 镜像')
+          NewApp.push(commit)
+      }
+
+    stage('delete build 镜像')
+      sh """
+      docker rmi ${registry_addr}/${maintainer_name}/${container_name}:${build_tag}
+      """
+  }
+}
 
 
 
