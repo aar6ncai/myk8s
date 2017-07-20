@@ -31,6 +31,7 @@ mkdir /home/jenkins
 
 https://raw.githubusercontent.com/triumph/myk8s/master/jenkins/k8s-jenkins_slave01.png
 https://raw.githubusercontent.com/triumph/myk8s/master/jenkins/k8s-jenkins_slave02.png
+https://raw.githubusercontent.com/triumph/myk8s/master/jenkins/k8s-jenkins_slave03.png
 
 4.Pipeline
 # for git
