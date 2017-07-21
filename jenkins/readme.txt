@@ -60,10 +60,17 @@ podTemplate(name: "jnlp-slave") {
         stage('Push 镜像')
           NewApp.push()
       }
-    stage('delete build images')
+
+    stage('删除本地 images')
       sh """
       docker rmi ${registry_addr}/${maintainer_name}/${container_name}:${build_tag}
       """
+   
+    stage('部署 yaml from k8s ')
+      sh """
+      sed -i "s/AAAAAABBBBBB/${build_tag}/g"  cijd.yaml && kubectl apply -f  cijd.yaml
+      """
+
   }
 }
 

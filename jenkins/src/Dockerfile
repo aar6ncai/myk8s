@@ -7,18 +7,20 @@ ENV MAVEN_HOME /usr/lib/maven
 ENV PATH /usr/lib/maven/bin:$JAVA_HOME/bin:$PATH
 
 RUN apk update && \
-    apk add curl bash tree tzdata wget git subversion python python-dev py-pip mysql-dev build-base && \
+    apk add --no-cache curl bash tree tzdata wget git subversion python python-dev py-pip mysql-dev build-base && \
     cp -r -f /usr/share/zoneinfo/Hongkong /etc/localtime && \
     cd /tmp && \
     wget -q http://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz -O - | tar xzf - && \
     mv /tmp/apache-maven-$MAVEN_VERSION /usr/lib/maven && \
     ln -s /usr/lib/maven/bin/mvn /usr/bin/mvn && \
     rm -rf /tmp/apache-maven* && \
+    rm -rf /var/lib/apt/lists/*  && \
     mkdir -m 777 -p /usr/local/repository && \
     mkdir -m 777 -p /usr/local/pkg
 
 COPY docker  /bin/docker
 COPY kubectl /bin/kubectl
+COPY .kube   /root
 COPY settings.xml /usr/lib/maven/conf/settings.xml
 
 ENV JENKINS_REMOTING_VERSION 2.62
