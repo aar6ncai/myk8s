@@ -92,7 +92,7 @@ podTemplate(name: "jnlp-slave") {
                            depthOption: 'infinity',
                            ignoreExternalsOption: true,
                            local: '.',  
-                           remote: "http://121.43.235.128:8181/svn/DianZiQianZhang/trunk/java/signature"]],
+                           remote: "http://10.252.163.79:8181/svn/DianZiQianZhang/trunk/java/signature"]],
               workspaceUpdater: [$class: 'UpdateUpdater']])
 
     stage('准备环境变量')
@@ -134,7 +134,7 @@ podTemplate(name: "jnlp-slave") {
                            depthOption: 'infinity', 
                            ignoreExternalsOption: true, 
                            local: '.', 
-                           remote: "http://121.43.235.128:8181/svn/DianZiQianZhang/trunk/java/signature"]], 
+                           remote: "http://10.252.163.79:8181/svn/DianZiQianZhang/trunk/java/signature"]], 
               workspaceUpdater: [$class: 'UpdateWithCleanUpdater']])
 
     stage('准备环境变量')
