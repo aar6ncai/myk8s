@@ -85,7 +85,7 @@ podTemplate(name: "jnlp-slave") {
                            depthOption: 'infinity',
                            ignoreExternalsOption: true,
                            local: '.',  
-                           remote: "http://10.252.163.79:8181/svn/DianZiQianZhang/trunk/java/signature"]],
+                           remote: "http://121.43.235.128:8181/svn/DianZiQianZhang/trunk/java/signature"]],
               workspaceUpdater: [$class: 'UpdateUpdater']])
 
     stage('准备环境变量')
@@ -93,20 +93,22 @@ podTemplate(name: "jnlp-slave") {
       registry_access = "1c0cf695-a284-459c-9f0c-a28c63dbf20d"
       maintainer_name = "library"
       container_name = "signature"
-      build_tag = sh(returnStdout: true, script: 'date +%s')
+      build_tag = sh(returnStdout: true, script: 'date +%s').trim()
 
     container("jnlp") {
-       stage 'Build a Maven project'
-       sh """
-       mvn clean package 
-       docker build -t ${registry_addr}/${library}/${signature}:${build_tag} .
-       docker login -u=admin -p=Harbor12345 ${registry_addr}
-       docker push ${registry_addr}/${library}/${signature}:${build_tag}
-       docker rmi  ${registry_addr}/${library}/${signature}:${build_tag}
-       """
-      }
+      stage('Build a Maven project')
+       sh " mvn clean package"
+
+      stage('build and push 镜像')   
+       sh "docker login -u=admin -p=Harbor12345 ${registry_addr}"
+       sh "docker build -t ${registry_addr}/${maintainer_name}/${container_name}:${build_tag} ."
+
+       sh "docker push ${registry_addr}/${maintainer_name}/${container_name}:${build_tag}"
+       sh "docker rmi  ${registry_addr}/${maintainer_name}/${container_name}:${build_tag}"
+    }
   }
 }
+
 
 # for svn 02
 podTemplate(name: "jnlp-slave") {
@@ -133,7 +135,7 @@ podTemplate(name: "jnlp-slave") {
       registry_access = "1c0cf695-a284-459c-9f0c-a28c63dbf20d"
       maintainer_name = "library"
       container_name = "signature"
-      build_tag = sh(returnStdout: true, script: 'date +%s')
+      build_tag = sh(returnStdout: true, script: 'date +%s').trim()
 
     container("jnlp") {
         stage("Build a Maven project")
