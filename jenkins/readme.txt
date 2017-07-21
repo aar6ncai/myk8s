@@ -68,7 +68,7 @@ podTemplate(name: "jnlp-slave") {
    
     stage('部署 yaml from k8s ')
       sh """
-      sed -i "s/AAAAAABBBBBB/${build_tag}/g"  cijd.yaml && kubectl --kubeconfig=/etc/kubeconfig apply -f  cijd.yaml
+      sed -i "s/AAAABBBB/${build_tag}/g" cijd.yaml && kubectl --kubeconfig=/etc/kubeconfig apply -f cijd.yaml
       """
 
   }
