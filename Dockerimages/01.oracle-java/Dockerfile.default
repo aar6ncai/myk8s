@@ -1,0 +1,2 @@
+FROM andreptb/oracle-java:8-alpine
+MAINTAINER triumph <triumph2008@gmail.com>

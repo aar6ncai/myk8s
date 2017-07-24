@@ -1,0 +1,2 @@
+FROM andreptb/tomcat:8.5-jdk8
+MAINTAINER triumph <triumph2008@gmail.com>

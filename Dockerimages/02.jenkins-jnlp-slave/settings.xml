@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+<localRepository>/usr/local/repository</localRepository>
+
+  <pluginGroups>
+   <pluginGroup>org.mortbay.jetty</pluginGroup>
+  </pluginGroups>
+
+  <servers> 
+   <server>  
+    <id>nexus-releases</id>  
+    <username>deployment</username>  
+    <password>deployment123</password>  
+   </server>  
+   <server>  
+    <id>nexus-snapshots</id>  
+    <username>deployment</username>  
+    <password>deployment123</password>  
+   </server>
+   <server>  
+    <id>thirdparty</id>  
+    <username>deployment</username>  
+    <password>deployment123</password>  
+   </server>
+  </servers>
+
+  <mirrors>
+   <mirror>
+    <id>maven-net-cn</id>
+    <name>Maven China Mirror</name>
+    <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+    <mirrorOf>central</mirrorOf>
+   </mirror>
+   <mirror>
+    <id>nexus</id>
+    <mirrorOf>*</mirrorOf>
+    <name>Nexus</name>
+    <url>http://192.168.8.231:8081/nexus/content/groups/public/</url>
+   </mirror>
+  </mirrors>
+
+  <profiles>  
+    <profile>  
+      <id>nexus</id>  
+      <repositories>  
+        <repository>  
+        <id>local-nexus</id>  
+        <url>http://192.168.8.231:8081/nexus/content/groups/public/</url>  
+        <releases>  
+          <enabled>true</enabled>
+          <updatePolicy>always</updatePolicy>  
+        </releases>  
+        <snapshots>  
+          <enabled>true</enabled>
+          <updatePolicy>always</updatePolicy>
+        </snapshots>  
+        </repository>  
+      </repositories>  
+      <pluginRepositories>     
+      <pluginRepository>     
+          <id>local-nexus_plugin</id>     
+          <url>http://192.168.8.231:8081/nexus/content/groups/public/</url>     
+          <releases>     
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>  
+          </releases>
+          <snapshots>
+             <enabled>true</enabled>
+             <updatePolicy>always</updatePolicy>  
+          </snapshots>
+      </pluginRepository>
+    </pluginRepositories>
+    </profile>  
+  </profiles>  
+  
+  <activeProfiles>  
+    <activeProfile>nexus</activeProfile>  
+  </activeProfiles>  
+
+</settings>
