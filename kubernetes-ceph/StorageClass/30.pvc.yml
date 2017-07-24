@@ -2,10 +2,11 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: test-rbd-sc-pvc
+  annotations:
+    volume.beta.kubernetes.io/storage-class: test-rbd-sc
 spec:
   accessModes:
   - ReadWriteOnce
   resources:
     requests:
       storage: 1024Mi
-  storageClassName: test-rbd-sc
