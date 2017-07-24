@@ -33,8 +33,6 @@ RUN /usr/bin/curl --create-dirs -sSLo /usr/share/jenkins/remoting-$JENKINS_REMOT
 
 COPY jenkins-slave.sh /usr/local/bin/jenkins-slave.sh
 
-RUN  mv /root/kube /root/.kube
-
 ENTRYPOINT ["/usr/local/bin/jenkins-slave.sh"]
 
 
