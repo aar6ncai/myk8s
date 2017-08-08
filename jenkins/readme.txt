@@ -53,6 +53,11 @@ podTemplate(name: "jnlp-slave") {
       container_name = "cijd"
       build_tag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()      
 
+    container("jnlp") {
+        stage("Build a Maven project")
+          sh "mvn clean package"
+      }
+
     stage('登入私用仓库')
       docker.withRegistry("https://${registry_addr}", "${registry_access}"){
         stage('Build 镜像')
