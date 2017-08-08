@@ -1,3 +1,13 @@
+install:
+kubectl apply -f 1.yaml
+kubectl apply -f 2.yaml
+kubectl apply -f 3.yaml
+
+update:
+kubectl set image deployment/jenkins jenkins=jenkinsci/jenkins:2.73 
+
+
+
 0.install nfs server
 mkdir  -m 777 -p  /home/nfsshare/
 yum -y install nfs-utils rpcbind
