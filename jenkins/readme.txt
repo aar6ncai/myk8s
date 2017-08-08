@@ -76,6 +76,12 @@ podTemplate(name: "jnlp-slave") {
       sh """
       sed -i "s/AAABBB/${build_tag}/g" k8s.yaml && kubectl --kubeconfig=/etc/kubeconfig apply -f k8s.yaml
       """
+    stage('email 邮件通知') {
+    emailext body: '''Project: $PROJECT_NAME 
+    Build Number: # $BUILD_NUMBER
+    Build Status: $BUILD_STATUS
+    Check console output at $BUILD_URL to view the results.''', subject: '$BUILD_STATUS - $PROJECT_NAME - Build # $BUILD_NUMBER', to: 'yuxq@fabao.cn'
+    }
 
   }
 }

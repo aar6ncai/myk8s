@@ -13,6 +13,8 @@ kubectl cluster-info
 
 4. https://github.com/suredandan/semi-auto-deploy-k8s
 
-5. https://github.com/cookeem/kubeadm-ha
+5. https://github.com/xwisen/deployk8s
 
-6. https://mritd.me/2017/07/21/set-up-kubernetes-ha-cluster-by-binary/
+6. https://github.com/cookeem/kubeadm-ha
+
+7. https://mritd.me/2017/07/21/set-up-kubernetes-ha-cluster-by-binary/
