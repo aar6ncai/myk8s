@@ -6,7 +6,8 @@ kubectl apply -f 3.yaml
 update:
 kubectl set image deployment/jenkins jenkins=jenkinsci/jenkins:2.73 
 
-
+jenkinsci_update_url:
+http://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json
 
 0.install nfs server
 mkdir  -m 777 -p  /home/nfsshare/
