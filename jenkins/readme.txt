@@ -1,5 +1,5 @@
 install:
-kubectl apply -f 1.yaml
+kubectl apply -f 1.yaml --record
 kubectl apply -f 2.yaml
 kubectl apply -f 3.yaml
 
