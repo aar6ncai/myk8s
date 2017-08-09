@@ -11,12 +11,16 @@ version: '2'
 services:
   owncloud:
     image: owncloud
+    restart: always
     volumes:
       - "/mydata/code/ownCloud/ownData:/var/www/html"
     ports:
       - 8021:80
+    links:
+      - mysql:mysql
   mysql:
     image: mysql:5.6
+    restart: always
     volumes:
         - "/mydata/code/ownCloud/mysqldata:/var/lib/mysql"
     ports:
@@ -24,5 +28,5 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 123456qazwsx
       MYSQL_DATABASE: ownCloud
-      MYSQL_USER: abc
-      MYSQL_PASSWORD: 123456
+      MYSQL_USER: fbabc
+      MYSQL_PASSWORD: fb123456
