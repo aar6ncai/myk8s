@@ -1,0 +1,48 @@
+version: '2'
+services:
+  nextcloud-db:
+    image: mariadb
+    container_name: nextcloud_db
+    volumes:
+      - ./mariadb:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456qazwsx
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=linux100
+      - MYSQL_PASSWORD=123456
+  nextcloud_web:
+    image: wonderfall/nextcloud
+    container_name: nextcloud_web
+    environment:
+      - UID=65534
+      - GID=65534
+      - UPLOAD_MAX_SIZE=10G
+      - APC_SHM_SIZE=128M
+      - OPCACHE_MEM_SIZE=128
+      - CRON_PERIOD=15m
+      - TZ=Aisa/Shanghai
+      - ADMIN_USER=admin
+      - ADMIN_PASSWORD=123456
+      - DOMAIN=pan.linux100.cc
+      - DB_TYPE=mysql
+      - DB_NAME=nextcloud
+      - DB_USER=linux100
+      - DB_PASSWORD=123456
+      - DB_HOST=nextcloud-db:3306
+    volumes:
+      - ./nextcloud/data:/data
+      - ./nextcloud/config:/config
+      - ./nextcloud/apps:/apps2
+      - ./nextcloud/themes:/nextcloud/themes
+    links:
+      - nextcloud-db
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: always
+    ports:
+      - 8031:80
+    volumes: 
+      - ./pan.linux100.cc.conf:/etc/nginx/conf.d/pan.linux100.cc.conf
+    links:
+      - nextcloud_web
