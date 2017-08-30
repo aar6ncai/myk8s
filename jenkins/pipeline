@@ -1,0 +1,40 @@
+  node("master") {
+    stage('拉取源码')
+    checkout([$class: 'SubversionSCM',
+              additionalCredentials: [],
+              excludedCommitMessages: '',
+              excludedRegions: '',
+              excludedRevprop: '',
+              excludedUsers: '',
+              filterChangelog: false,
+              ignoreDirPropChanges: false,
+              includedRegions: '',
+              locations: [[credentialsId: 'ffee7843-d594-4db1-81d0-7651cea00dc0',
+                           depthOption: 'infinity',
+                           ignoreExternalsOption: true,
+                           local: '.',  
+                           remote: "http://10.252.163.79:8181/svn/CuiShouPingTai/trunk/openapi"]],
+              workspaceUpdater: [$class: 'UpdateUpdater']])
+
+    stage('准备环境变量')
+        PackageUrl = "http://10.171.216.74:8180/pkg"
+
+        ProjectName = "CSPT_java_openapi"
+        PackageName = "openapi-0.0.1"
+
+        DeployHost = "10.47.115.42"
+        DeployPort = "22"
+        DeployUser = "root"
+        DeployPass = "xxxxxx"
+
+    stage('Maven 编译')
+        sh " mvn clean package"
+
+    stage('save jar或者war')
+        sh " cp target/${PackageName}-SNAPSHOT.jar  /services/pkg/${ProjectName}/${PackageName}-${BUILD_NUMBER}.jar"
+        sh " chmod 755 /services/pkg/${ProjectName}/${PackageName}-${BUILD_NUMBER}.jar"
+
+    stage('deploy 程序')
+        sh "sshpass  -p \"${DeployPass}\" ssh ${DeployUser}@${DeployHost} -p ${DeployPort}  \"/usr/local/tools/jenkins_update.sh ${ProjectName}  ${PackageUrl}/${ProjectName}/${PackageName}-${BUILD_NUMBER}.jar\" "
+  }
+
