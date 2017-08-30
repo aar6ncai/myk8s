@@ -35,6 +35,10 @@
         sh " chmod 755 /services/pkg/${ProjectName}/${PackageName}-${BUILD_NUMBER}.jar"
 
     stage('deploy 程序')
-        sh "sshpass  -p \"${DeployPass}\" ssh ${DeployUser}@${DeployHost} -p ${DeployPort}  \"/usr/local/tools/jenkins_update.sh ${ProjectName}  ${PackageUrl}/${ProjectName}/${PackageName}-${BUILD_NUMBER}.jar\" "
+       sshagent (credentials: ['deploy-dev']) {
+       sh "ssh -o StrictHostKeyChecking=no -l ${DeployUser} {DeployHost}  -p ${DeployPort}   /usr/local/tools/jenkins_update.sh ${ProjectName}  ${PackageUrl}/${ProjectName}/${PackageName}-${BUILD_NUMBER}.jar"
+       }
+
+       #sh "sshpass  -p \"${DeployPass}\" ssh ${DeployUser}@${DeployHost} -p ${DeployPort} \"/usr/local/tools/jenkins_update.sh ${ProjectName}  ${PackageUrl}/${ProjectName}/${PackageName}-${BUILD_NUMBER}.jar\" "
   }
 
