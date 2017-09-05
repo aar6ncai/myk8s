@@ -4,6 +4,7 @@ cd /etc/kubernetes/ssl/ &&  openssl pkcs12 -export -in admin.pem  -out admin.p12
 
 kubectl cluster-info
 
+0. https://wiki.shileizcc.com/display/KUB/Kubernetes
 
 1. https://github.com/opsnull/follow-me-install-kubernetes-cluster/blob/master/SUMMARY.md
 
