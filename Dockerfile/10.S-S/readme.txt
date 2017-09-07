@@ -40,6 +40,8 @@ server:
     - PASSWORD=5ouMnqPyzseL
   restart: always
 
+
+
 # cat docker-compose.yml
 server:
   image: imhang/kcp-shadowsocks-docker
@@ -50,9 +52,11 @@ server:
   environment:
     - SS_PORT=443
     - SS_PASSWORD=5ouMnqPyzseL
-    - METHOD=aes-256-cfb
+    - SS_METHOD=aes-256-cfb
     - SS_TIMEOUT=600
     - KCP_PORT=9443
+    - KCP_KEY=5ouMnqPyzseL
+    - KCP_CRYPT=none
     - KCP_MODE=fast
     - MTU=1400
     - SNDWND=1024
