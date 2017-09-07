@@ -4,6 +4,8 @@ https://github.com/EasyPi/docker-shadowsocks-libev
 https://github.com/ZRStea/docker-shadowsocks-libev-obfs-privoxy
 https://github.com/hangim/kcp-shadowsocks-docker
 
+https://github.com/xtaci/kcptun/releases
+https://github.com/dfdragon/kcptun_gclient
 
 https://github.com/cndocker/kcptun-socks5-ss-server-docker
 备注1：运行模式
