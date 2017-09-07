@@ -6,8 +6,6 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositorie
 
 ENV SS_URL=https://github.com/shadowsocks/shadowsocks-libev/archive/v3.0.8.tar.gz \
     SS_DIR=shadowsocks-libev-3.0.8 \
-    SIMPLE_OBFS_URL=https://github.com/shadowsocks/simple-obfs/archive/v0.0.3.tar.gz \
-    SIMPLE_OBFS_DIR=simple-obfs-0.0.3 \
     CONF_DIR="/usr/local/conf" \
     kcptun_latest="https://github.com/xtaci/kcptun/releases/latest" \
     KCPTUN_DIR=/usr/local/kcp-server
