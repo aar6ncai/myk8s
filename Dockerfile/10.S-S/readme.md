@@ -64,3 +64,5 @@ server:
     - SNDWND=1024
     - RCVWND=1024
   restart: always
+
+![image](http://github.com/triumph/myk8s/raw/master/Dockerfile/10.S-S/kcptun.jpg)
