@@ -1,0 +1,56 @@
+# kcp-server & shadowsocks-libev for Dockerfile
+FROM alpine:latest
+MAINTAINER triumph2008@gmail.com
+
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
+
+ENV SS_URL=https://github.com/shadowsocks/shadowsocks-libev/archive/v3.0.8.tar.gz \
+    SS_DIR=shadowsocks-libev-3.0.8 \
+    SIMPLE_OBFS_URL=https://github.com/shadowsocks/simple-obfs/archive/v0.0.3.tar.gz \
+    SIMPLE_OBFS_DIR=simple-obfs-0.0.3 \
+    CONF_DIR="/usr/local/conf" \
+    kcptun_latest="https://github.com/xtaci/kcptun/releases/latest" \
+    KCPTUN_DIR=/usr/local/kcp-server
+
+RUN set -ex && \
+    apk add --no-cache bash && \
+    apk add --no-cache libcrypto1.0 libev libsodium mbedtls pcre udns c-ares  && \
+    apk add --no-cache  --virtual TMP autoconf automake build-base git wget curl tar gzip libtool linux-headers openssl-dev pcre-dev gettext-dev libev-dev libsodium-dev mbedtls-dev udns-dev c-ares-dev && \
+    mkdir /tmp/simple-obfs && \
+    cd  /tmp/simple-obfs && \
+    git clone --depth=1 https://github.com/shadowsocks/simple-obfs.git . && \
+    git submodule update --init --recursive && \
+    ./autogen.sh && \
+    ./configure --prefix=/usr --disable-documentation && make && \
+    make install && \
+    cd .. && \
+    curl -sSL $SS_URL | tar xz && \
+    cd $SS_DIR && \
+    curl -sSL https://github.com/shadowsocks/ipset/archive/shadowsocks.tar.gz | tar xz --strip 1 -C libipset  &&  \
+    curl -sSL https://github.com/shadowsocks/libcork/archive/shadowsocks.tar.gz | tar xz --strip 1 -C libcork &&  \
+    curl -sSL https://github.com/shadowsocks/libbloom/archive/master.tar.gz | tar xz --strip 1 -C libbloom &&  \
+    ./autogen.sh && \
+    ./configure --disable-documentation && \
+    make install && \
+    cd .. && \
+    rm -rf $SS_DIR && \
+    [ ! -d ${CONF_DIR} ] && mkdir -p ${CONF_DIR} && \
+    [ ! -d ${KCPTUN_DIR} ] && mkdir -p ${KCPTUN_DIR} && cd ${KCPTUN_DIR} && \
+    wget https://raw.githubusercontent.com/clangcn/kcp-server/master/socks5_latest/socks5_linux_amd64 -O ${KCPTUN_DIR}/socks5 && \
+    kcptun_latest_release=`curl -s ${kcptun_latest} | cut -d\" -f2` && \
+    kcptun_latest_download=`curl -s ${kcptun_latest} | cut -d\" -f2 | sed 's/tag/download/'` && \
+    kcptun_latest_filename=`curl -s ${kcptun_latest_release} | sed -n '/<strong>kcptun-linux-amd64/p' | cut -d">" -f2 | cut -d "<" -f1` && \
+    wget ${kcptun_latest_download}/${kcptun_latest_filename} -O ${KCPTUN_DIR}/${kcptun_latest_filename} && \
+    tar xzf ${KCPTUN_DIR}/${kcptun_latest_filename} -C ${KCPTUN_DIR}/ && \
+    mv ${KCPTUN_DIR}/server_linux_amd64 ${KCPTUN_DIR}/kcp-server && \
+    rm -f ${KCPTUN_DIR}/client_linux_amd64 ${KCPTUN_DIR}/${kcptun_latest_filename} && \
+    chown root:root ${KCPTUN_DIR}/* && \
+    chmod 755 ${KCPTUN_DIR}/* && \
+    ln -s ${KCPTUN_DIR}/* /bin/ && \
+    apk --no-cache del --virtual TMP && \
+    apk --no-cache del build-base autoconf && \
+    rm -rf /var/cache/apk/* ~/.cache /tmp/simple-obfs
+
+ADD entrypoint-simple-obfs.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
