@@ -48,3 +48,14 @@ server:
     - METHOD=aes-256-cfb
     - PASSWORD=5ouMnqPyzseL
   restart: always
+
+# cat docker-compose.yml 
+server:
+  image: easypi/shadowsocks-libev:obfs
+  ports:
+    - "8388:8388/tcp"
+    - "8388:8388/udp"
+  environment:
+    - METHOD=aes-256-cfb
+    - PASSWORD=5ouMnqPyzseL
+  restart: always
