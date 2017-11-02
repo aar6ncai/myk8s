@@ -23,3 +23,5 @@ kubectl cluster-info
 8. https://github.com/cookeem/kubeadm-ha
 
 9. https://mritd.me/2017/07/21/set-up-kubernetes-ha-cluster-by-binary/
+
+10. https://github.com/kubeguide/samplecode
